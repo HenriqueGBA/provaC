@@ -12,6 +12,12 @@ Content-Type: application/json
 }
 
 ### Alterar status da tarefa pelo id
-PUT http://localhost:5000/tarefas/alterar/6a8b3e4d-5e4e-4f7e-bdc9-9181e456ad0e
+PUT http://localhost:5000/tarefas/alterar/0acb4b91-8eb0-41c0-afe7-d20a3359af4a
 Content-Type: application/json
+
+### Listagem das tarefas não concluidas
+GET http://localhost:5000/tarefas/naoconcluidas
+
+### Listagem das tarefas concluidas
+GET http://localhost:5000/tarefas/concluidas
 

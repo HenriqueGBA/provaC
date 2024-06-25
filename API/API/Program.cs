@@ -65,7 +65,7 @@ app.MapPut("/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [FromRou
         return Results.NotFound("Tarefa não encontrada");
     }
 
-    tarefa.Status = tarefa.Status == "Em andamento" ? "Concluido" : "Em andamento";
+    tarefa.Status = tarefa.Status == "Não iniciada" ? "Em andamento" : "Concluída";
 
     ctx.Tarefas.Update(tarefa);
     ctx.SaveChanges();
@@ -76,13 +76,23 @@ app.MapPut("/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [FromRou
 //GET: http://localhost:5273/tarefas/naoconcluidas
 app.MapGet("/tarefas/naoconcluidas", ([FromServices] AppDataContext ctx) =>
 {
-    
+    if (ctx.Tarefas.Any())
+    {
+        return Results.Ok(ctx.Tarefas.Where(t => t.Status == "Não iniciada" || t.Status == "Em andamento"));
+    }
+    return Results.NotFound("Nenhuma tarefa não concluída encontrada");
+
 });
 
 //GET: http://localhost:5273/tarefas/concluidas
 app.MapGet("/tarefas/concluidas", ([FromServices] AppDataContext ctx) =>
 {
-    //Implementar a listagem de tarefas concluídas
+    if (ctx.Tarefas.Any())
+    {
+        return Results.Ok(ctx.Tarefas.Where(t => t.Status == "Concluída"));
+    }
+    return Results.NotFound("Nenhuma tarefa concluída encontrada");
+
 });
 
 app.Run();
